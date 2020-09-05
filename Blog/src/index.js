@@ -13,21 +13,24 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(morgan('combined'))
 
 // Template engine
-app.engine('hb', handlebars({
-    extname: '.hb'
+app.engine('handlebars', handlebars({
+    extname: '.handlebars'
 }));
-app.set('view engine', 'hb');
+app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'resources/views'))
 
 app.get('/', (req, res) => { //Định nghĩa route(tuyến đường, dường dẫn)
-    res.render('home')
-})
-
+        res.render('home')
+    })
+    //routing
 app.get('/news', (req, res) => {
-    res.render('news')
-})
-
-// lắng nghe cổng port được define ở trên
+        res.render('news')
+    })
+    //Search 
+app.get('/search', (req, res) => {
+        res.render('search')
+    })
+    // lắng nghe cổng port được define ở trên
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })
