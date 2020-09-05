@@ -4,10 +4,15 @@ const morgan = require('morgan');
 const handlebars = require('express-handlebars');
 const app = express() //function đc xây dựng sẵn trong thư viện express
     // Trả về 1 đối tượng đại diện cho ứng dụng nodejs (app) sử dụng tới khi hoàn thành
-
 const port = 3000 //define muốn run website ở port nào
 
 app.use(express.static(path.join(__dirname, 'public')))
+
+app.use(express.urlencoded({
+        extended: true
+    })) //tạo middleware(trung gian) cho req.body
+app.use(express.json())
+
 
 //HTTP logger
 app.use(morgan('combined'))
@@ -28,9 +33,14 @@ app.get('/news', (req, res) => {
     })
     //Search 
 app.get('/search', (req, res) => {
-        res.render('search')
-    })
-    // lắng nghe cổng port được define ở trên
+    res.render('search')
+})
+
+app.post('/search', (req, res) => {
+    res.send('')
+})
+
+// lắng nghe cổng port được define ở trên
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })
