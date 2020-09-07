@@ -6,6 +6,8 @@ const app = express() //function đc xây dựng sẵn trong thư viện express
     // Trả về 1 đối tượng đại diện cho ứng dụng nodejs (app) sử dụng tới khi hoàn thành
 const port = 3000 //define muốn run website ở port nào
 
+const route = require('./routes')
+
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use(express.urlencoded({
