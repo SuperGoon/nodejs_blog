@@ -1,0 +1,88 @@
+<div class="mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="mb-0">MY VIDEOS</h3>
+    <a href="/me/trash/courses" class="badge badge-primary">
+    <i class="fas fa-trash"></i>
+    Thùng rác
+    </a>
+    </div>
+    <table class="table table-bordered ">
+        <thead>
+            <tr class="table-primary">
+                <th scope="col">STT</th>
+                <th scope="col">Video Name</th>
+                <th scope="col" class="text-center">Trending</th>
+                <th scope="col">Time Update</th>
+                <th scope="col">Editors</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each courses}}
+                <tr class="table-active">
+                    <th scope="row">{{sum @index 1}}</th>
+                    <td>{{this.name}}</td>
+                    <td class="text-center">{{this.level}}</td>
+                    <td>{{this.createdAt}}</td>
+                    <td>
+                        <a href="/courses/{{this._id}}/edit" class="btn btn-success">Edit</a>
+                        <a href="" class="btn btn-danger" data-toggle="modal" data-id="{{this._id}}" data-target="#delete-video">Delete</a>
+                    </td>
+                </tr>
+                {{else}}
+                <tr>
+                    <td colspan="5" class="text-center">
+                        Bạn chưa đăng video nào!!
+                        <a href="/courses/create">Đăng khóa học</a>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    {{!-- FORM Delete video --}}
+    <div class="modal" tabindex="-1" id="delete-video">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">DELETE VIDEO</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this video??</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="btn-delete-video" class="btn btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{!-- Delete form hidden --}}
+<form name="delete-video-form" method="POST"></form>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function(){
+        var videoID;
+        var deleteVideo = document.forms['delete-video-form']
+        var btnDeleteVideo = document.getElementById('btn-delete-video');
+
+        $('#delete-video').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            videoID = button.data('id');
+            console.log(videoID)
+        });
+
+
+        btnDeleteVideo.onclick = function(){
+            deleteVideo.action = '/courses/' + videoID + '?_method=DELETE'
+            deleteVideo.submit();
+        }
+
+    })
+
+</script>

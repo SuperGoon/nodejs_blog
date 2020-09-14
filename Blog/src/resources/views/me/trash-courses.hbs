@@ -1,0 +1,97 @@
+<div class="mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="mb-0">VIDEO ĐÃ XÓA</h3>
+    <a href="/me/stored/courses" class="badge badge-primary">
+    <i class="fas fa-arrow-circle-left"></i>
+    Quay lại danh sách
+    </a>
+    </div>
+    <table class="table table-bordered ">
+        <thead>
+            <tr class="table-primary">
+                <th scope="col">STT</th>
+                <th scope="col">Video Name</th>
+                <th scope="col" class="text-center">Trending</th>
+                <th scope="col">Time Update</th>
+                <th scope="col">Editors</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each courses}}
+                <tr class="table-active">
+                    <th scope="row">{{sum @index 1}}</th>
+                    <td>{{this.name}}</td>
+                    <td class="text-center">{{this.level}}</td>
+                    <td>{{this.createdAt}}</td>
+                    <td>
+                        <a href="" class="btn btn-success btn-restore" data-id="{{this._id}}">Restore</a>
+                        <a href="" class="btn btn-danger" data-toggle="modal" data-id="{{this._id}}" data-target="#delete-video">Delete</a>
+                    </td>
+                </tr>
+                {{else}}
+                <tr>
+                    <td colspan="5" class="text-center">
+                        Thùng rác trống!!
+                        <a href="/me/stored/courses">Danh sách khóa học</a>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    {{!-- FORM Delete video --}}
+    <div class="modal" tabindex="-1" id="delete-video">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">DELETE VIDEO</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Hành động này không thể khôi phục! Bạn vẫn muốn thực hiện hành động này??</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="btn-delete-video" class="btn btn-danger">Xóa Vĩnh Viễn</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form name="delete-video-form" method="POST"></form>
+<form name="restore-video-form" method="POST"></form>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function(){
+        var videoID;
+        var deleteVideo = document.forms['delete-video-form']
+        var restoreVideo = document.forms['restore-video-form']
+        var btnDeleteVideo = document.getElementById('btn-delete-video');
+        var btnRestore = $('.btn-restore')
+
+        $('#delete-video').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            videoID = button.data('id');
+        });
+
+        //Click to delete
+        btnDeleteVideo.onclick = function(){
+            deleteVideo.action = '/courses/' + videoID + '?_method=DELETE'
+            deleteVideo.submit();
+        }
+
+        //Restore btn clicked
+        btnRestore.click(function(e){
+            e.preventDefault();
+            var videoID = $(this).data('id')
+            restoreVideo.action = '/courses/' + videoID + '/restore/?_method=PATCH'
+            restoreVideo.submit();
+        })
+
+    })
+
+</script>
